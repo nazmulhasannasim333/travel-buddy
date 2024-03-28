@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Trip } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,13 +9,13 @@ const createTrip = async (
   endDate: string,
   budget: number,
   activities: string[]
-): Promise<any> => {
+): Promise<Trip> => {
   const trip = await prisma.trip.create({
     data: {
       userId,
       destination,
-      startDate,
-      endDate,
+      startDate: new Date(startDate).toISOString(),
+      endDate: new Date(endDate).toISOString(),
       budget,
       activities,
     },

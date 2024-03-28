@@ -5,7 +5,7 @@ import catchAsync from "../../shared/catchAsync";
 const createTrip = async (req: Request, res: Response): Promise<void> => {
   try {
     // Ensure req.user is defined and contains userId
-    const {userId} = req;
+    const {userId} = req.user;
    console.log(userId);
     if (!userId) {
       res.status(401).json({
