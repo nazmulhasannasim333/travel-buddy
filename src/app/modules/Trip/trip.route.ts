@@ -7,5 +7,6 @@ import auth from "../../middleWare/auth";
 const router = express.Router();
 
 router.post("/trips", auth(), tripController.createTrip);
+router.get("/trips", tripController.getTripsController);
 
 export const tripRoutes = router;
