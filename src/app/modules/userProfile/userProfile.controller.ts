@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { userProfileService } from "./userProfile.services";
+import catchAsync from "../../shared/catchAsync";
+import sendResponse from "../../shared/sendResponse";
 
-const getUserProfileController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const { userId } = req.user; // Assuming user ID is available in the request object after authentication middleware
+const getUserProfileController = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.user; 
 
     const userProfile = await userProfileService.getUserProfile(userId);
 
@@ -18,27 +17,18 @@ const getUserProfileController = async (
       return;
     }
 
-    res.status(200).json({
+    sendResponse(res, {
       success: true,
       statusCode: 200,
       message: "User profile retrieved successfully",
       data: userProfile,
     });
-  } catch (error) {
-    console.error("Error retrieving user profile:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error while retrieving user profile.",
-    });
   }
-};
+);
 
-const updateUserProfile = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const {userId} = req.user; // Extract userId from the authenticated user
+const updateUserProfile = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.user; // Extract userId from the authenticated user
     const { name, email } = req.body;
 
     // Update the user profile
@@ -48,22 +38,16 @@ const updateUserProfile = async (
       email
     );
 
-    res.status(200).json({
+    sendResponse(res, {
       success: true,
       statusCode: 200,
       message: "User profile updated successfully",
       data: updatedProfile,
     });
-  } catch (error) {
-    console.error("Error updating user profile:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error during user profile update",
-    });
   }
-};
+);
 
 export const userProfileController = {
   getUserProfileController,
-  updateUserProfile
+  updateUserProfile,
 };

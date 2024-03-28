@@ -9,12 +9,21 @@ const router = express.Router();
 router.post("/trips", auth(), tripController.createTrip);
 router.get("/trips", tripController.getTripsController);
 
-router.post("/trip/:tripId/request", tripController.sendRequestController);
+router.post(
+  "/trip/:tripId/request",
+  auth(),
+  tripController.sendRequestController
+);
 
 router.get(
   "/travel-buddies/:tripId",
+  auth(),
   tripController.getPotentialBuddiesController
 );
 
-router.put("/travel-buddies/:buddyId/respond", tripController.respondToBuddyRequestController);
+router.put(
+  "/travel-buddies/:buddyId/respond",
+  auth(),
+  tripController.respondToBuddyRequestController
+);
 export const tripRoutes = router;
