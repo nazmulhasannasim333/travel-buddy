@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { createToken } from "./user.utils";
+import Config from "../../Config";
 
 const prisma = new PrismaClient();
 
@@ -37,12 +39,6 @@ const registerUser = async (
   return { ...user };
 };
 
-// const generateToken = (userId: string): string => {
-//   return jwt.sign({ userId }, process.env.JWT_SECRET || "your-secret-key", {
-//     expiresIn: process.env.EXPIRES_IN,
-//   });
-// };
-
 const loginUser = async (email: string, password: string): Promise<any> => {
   const user = await prisma.user.findUnique({
     where: { email },
@@ -58,7 +54,17 @@ const loginUser = async (email: string, password: string): Promise<any> => {
     throw new Error("Invalid password.");
   }
 
-  const token = generateToken(user.id);
+  const jwtPayload = {
+    name: user.name,
+    email: user.email,
+    userId: user.id,
+  };
+
+  const token = createToken(
+    jwtPayload,
+    Config.jwt.jwt_secret as string,
+    Config.jwt.expires_in as string
+  );
 
   // Omitting password from user data
   const { password: _, ...userData } = user;
@@ -66,12 +72,7 @@ const loginUser = async (email: string, password: string): Promise<any> => {
   return { ...userData, token };
 };
 
-const generateToken = (userId: string): string => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET || "your-secret-key", {
-    expiresIn: "24h",
-  });
-};
 export const userServices = {
   registerUser,
-  loginUser
+  loginUser,
 };

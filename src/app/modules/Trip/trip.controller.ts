@@ -5,6 +5,7 @@ import pick from "../../shared/pick";
 import { tripFilterAbleFields } from "./trip.constant";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
+import { JwtPayload } from "jsonwebtoken";
 
 const createTrip = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
