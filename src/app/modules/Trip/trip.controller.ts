@@ -114,9 +114,46 @@ const getPotentialBuddiesController = async (
   }
 };
 
+const respondToBuddyRequestController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { buddyId } = req.params;
+    const { status } = req.body;
+
+    const updatedRequest = await tripServices.respondToTravelBuddyRequest(
+      buddyId,
+      status
+    );
+
+    if (!updatedRequest) {
+      res.status(404).json({
+        success: false,
+        message: "Travel buddy request not found.",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Travel buddy request responded successfully",
+      data: updatedRequest,
+    });
+  } catch (error) {
+    console.error("Error responding to travel buddy request:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while responding to travel buddy request.",
+    });
+  }
+};
+
 export const tripController = {
   createTrip,
   getTripsController,
   sendRequestController,
   getPotentialBuddiesController,
+  respondToBuddyRequestController,
 };

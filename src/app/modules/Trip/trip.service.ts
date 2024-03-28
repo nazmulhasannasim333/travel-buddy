@@ -143,9 +143,27 @@ const getPotentialTravelBuddies = async (
   return potentialBuddies;
 };
 
+const respondToTravelBuddyRequest = async (
+  buddyId: string,
+  status: string
+): Promise<TravelBuddyRequest | null> => {
+  const updatedRequest = await prisma.travelBuddyRequest.update({
+    where: {
+      id: buddyId,
+    },
+    data: {
+      status,
+      updatedAt: new Date(),
+    },
+  });
+
+  return updatedRequest;
+};
+
 export const tripServices = {
   createTrip,
   getFilteredTrips,
   sendTravelBuddyRequest,
   getPotentialTravelBuddies,
+  respondToTravelBuddyRequest
 };

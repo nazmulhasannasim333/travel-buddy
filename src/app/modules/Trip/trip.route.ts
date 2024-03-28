@@ -11,5 +11,10 @@ router.get("/trips", tripController.getTripsController);
 
 router.post("/trip/:tripId/request", tripController.sendRequestController);
 
-router.get("/travel-buddies/:tripId", tripController.getPotentialBuddiesController);
+router.get(
+  "/travel-buddies/:tripId",
+  tripController.getPotentialBuddiesController
+);
+
+router.put("/travel-buddies/:buddyId/respond", tripController.respondToBuddyRequestController);
 export const tripRoutes = router;
