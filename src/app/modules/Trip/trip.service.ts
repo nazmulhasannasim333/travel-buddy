@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Trip } from "@prisma/client";
+import { Prisma, PrismaClient, TravelBuddyRequest, Trip } from "@prisma/client";
 import { ITripFilterRequest } from "./tripInterface";
 import { IPaginationOption } from "../../Interface/pagination";
 import { paginationHelper } from "../../helpars/paginationHelpers";
@@ -107,7 +107,23 @@ const getFilteredTrips = async (
   };
 };
 
+const sendTravelBuddyRequest = async (
+  tripId: string,
+  userId: string
+): Promise<TravelBuddyRequest> => {
+  const request = await prisma.travelBuddyRequest.create({
+    data: {
+      tripId,
+      userId,
+      status: "PENDING",
+    },
+  });
+
+  return request;
+};
+
 export const tripServices = {
   createTrip,
   getFilteredTrips,
+  sendTravelBuddyRequest
 };

@@ -57,13 +57,39 @@ const getTripsController = async (
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Admin data fetched!",
+    message: "Trips retrieved successfully",
     meta: result.meta,
     data: result.data,
   });
 };
 
+const sendRequestController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { tripId } = req.params;
+    const { userId } = req.body;
+
+    const request = await tripServices.sendTravelBuddyRequest(tripId, userId);
+
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: "Travel buddy request sent successfully",
+      data: request,
+    });
+  } catch (error) {
+    console.error("Error sending travel buddy request:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during travel buddy request sending.",
+    });
+  }
+};
+
 export const tripController = {
   createTrip,
   getTripsController,
+  sendRequestController
 };

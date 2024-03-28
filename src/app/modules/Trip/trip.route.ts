@@ -9,4 +9,5 @@ const router = express.Router();
 router.post("/trips", auth(), tripController.createTrip);
 router.get("/trips", tripController.getTripsController);
 
+router.post("/trip/:tripId/request", tripController.sendRequestController);
 export const tripRoutes = router;
