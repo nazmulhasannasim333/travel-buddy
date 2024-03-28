@@ -10,4 +10,6 @@ router.post("/trips", auth(), tripController.createTrip);
 router.get("/trips", tripController.getTripsController);
 
 router.post("/trip/:tripId/request", tripController.sendRequestController);
+
+router.get("/travel-buddies/:tripId", tripController.getPotentialBuddiesController);
 export const tripRoutes = router;

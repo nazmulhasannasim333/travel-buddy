@@ -88,8 +88,35 @@ const sendRequestController = async (
   }
 };
 
+const getPotentialBuddiesController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { tripId } = req.params;
+
+    const potentialBuddies = await tripServices.getPotentialTravelBuddies(
+      tripId
+    );
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Potential travel buddies retrieved successfully",
+      data: potentialBuddies,
+    });
+  } catch (error) {
+    console.error("Error retrieving potential travel buddies:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while retrieving potential travel buddies.",
+    });
+  }
+};
+
 export const tripController = {
   createTrip,
   getTripsController,
-  sendRequestController
+  sendRequestController,
+  getPotentialBuddiesController,
 };

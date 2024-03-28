@@ -122,8 +122,30 @@ const sendTravelBuddyRequest = async (
   return request;
 };
 
+const getPotentialTravelBuddies = async (
+  tripId: string
+): Promise<TravelBuddyRequest[]> => {
+  const potentialBuddies = await prisma.travelBuddyRequest.findMany({
+    where: {
+      tripId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return potentialBuddies;
+};
+
 export const tripServices = {
   createTrip,
   getFilteredTrips,
-  sendTravelBuddyRequest
+  sendTravelBuddyRequest,
+  getPotentialTravelBuddies,
 };
