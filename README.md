@@ -2,7 +2,7 @@
 
 ## Live URL
 
-[https://travel-buddy-chi.vercel.app](https://travel-buddy-chi.vercel.app)
+[https://travel-buddy-assignment-eight.vercel.app/](https://travel-buddy-assignment-eight.vercel.app/)
 
 ## Video Description
 
