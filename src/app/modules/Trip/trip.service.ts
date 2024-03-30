@@ -61,13 +61,13 @@ const getFilteredTrips = async (
       andCondition.push({ destination: { contains: destination } });
     }
 
-    if (startDate) {
-      andCondition.push({ startDate: { gte: new Date(startDate) } });
-    }
+    // if (startDate) {
+    //   andCondition.push({ startDate: { gte: new Date(startDate) } });
+    // }
 
-    if (endDate) {
-      andCondition.push({ endDate: { lte: new Date(endDate) } });
-    }
+    // if (endDate) {
+    //   andCondition.push({ endDate: { lte: new Date(endDate) } });
+    // }
 
     if (budget && (budget.minBudget || budget.maxBudget)) {
       andCondition.push({
