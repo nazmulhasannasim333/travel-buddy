@@ -11,7 +11,6 @@ const createTrip = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     // Ensure req.user is defined and contains userId
     const { userId } = req.user;
-    console.log(userId);
     if (!userId) {
       res.status(401).json({
         success: false,

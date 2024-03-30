@@ -165,5 +165,5 @@ export const tripServices = {
   getFilteredTrips,
   sendTravelBuddyRequest,
   getPotentialTravelBuddies,
-  respondToTravelBuddyRequest
+  respondToTravelBuddyRequest,
 };
