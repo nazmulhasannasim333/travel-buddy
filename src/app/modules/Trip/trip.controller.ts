@@ -61,6 +61,8 @@ const sendRequestController = catchAsync(
     const { tripId } = req.params;
     const { userId } = req.body;
 
+
+
     const request = await tripServices.sendTravelBuddyRequest(tripId, userId);
 
     sendResponse(res, {

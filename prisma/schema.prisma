@@ -31,8 +31,8 @@ model Trip {
   id                 String               @id @default(uuid())
   userId             String
   destination        String
-  startDate          DateTime
-  endDate            DateTime
+  startDate          String
+  endDate            String
   budget             Float
   activities         String[]
   createdAt          DateTime             @default(now())

@@ -1,14 +1,8 @@
 export type ITripFilterRequest = {
-  destination?: string;
-  startDate?: string;
+  destination?: string | undefined;
+  startDate?: string | undefined;
   endDate?: string;
-  budget?: {
-    minBudget?: number;
-    maxBudget?: number;
-  };
+  minBudget?: number | undefined;
+  maxBudget?: number | undefined;
   searchTerm?: string;
-  // page: number;
-  // limit: number;
-  // sortBy: string;
-  // sortOrder: string;
 };
