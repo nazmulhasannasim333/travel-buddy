@@ -1,26 +1,30 @@
 import { Prisma, PrismaClient, TravelBuddyRequest, Trip } from "@prisma/client";
 import { ITripFilterRequest } from "./tripInterface";
 import { IPaginationOption } from "../../Interface/pagination";
-import { paginationHelper } from "../../helpars/paginationHelpers";
-import { tripSearchAbleFields } from "./trip.constant";
 
 const prisma = new PrismaClient();
 
 const createTrip = async (
   userId: string,
   destination: string,
+  description: string,
   startDate: string,
   endDate: string,
   budget: number,
+  type: string,
+  photo: string,
   activities: string[]
 ): Promise<Trip> => {
   const trip = await prisma.trip.create({
     data: {
       userId,
       destination,
-      startDate: new Date(startDate).toISOString(),
-      endDate: new Date(endDate).toISOString(),
+      description,
+      startDate,
+      endDate,
       budget,
+      type,
+      photo,
       activities,
     },
   });
@@ -39,7 +43,7 @@ const getFilteredTrips = async (
   const andCondition: Prisma.TripWhereInput[] = [];
 
   if (searchTerm) {
-    const tripSearchAbleFields = ["destination"];
+    const tripSearchAbleFields = ["destination", "date", "type"];
     andCondition.push({
       OR: tripSearchAbleFields.map((field) => ({
         [field]: {

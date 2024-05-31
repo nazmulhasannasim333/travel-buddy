@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(
   "/trips",
   auth(),
-  validateRequest(tripValidation.createTripValidation),
+  // validateRequest(tripValidation.createTripValidation),
   tripController.createTrip
 );
 router.get("/trips", tripController.getTripsController);

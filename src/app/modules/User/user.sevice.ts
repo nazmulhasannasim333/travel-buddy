@@ -72,7 +72,13 @@ const loginUser = async (email: string, password: string): Promise<any> => {
   return { ...userData, token };
 };
 
+const getUserFromDB = async () => {
+  const user = await prisma.user.findMany({});
+  return user;
+};
+
 export const userServices = {
   registerUser,
   loginUser,
+  getUserFromDB,
 };

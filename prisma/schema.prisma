@@ -18,6 +18,8 @@ model User {
   name               String
   email              String               @unique
   password           String
+  status             Status               @default(ACTIVE)
+  role               Role                 @default(USER)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   trip               Trip[]
@@ -31,10 +33,13 @@ model Trip {
   id                 String               @id @default(uuid())
   userId             String
   destination        String
+  description        String
   startDate          String
   endDate            String
   budget             Float
   activities         String[]
+  type               String
+  photo              String
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   user               User                 @relation(fields: [userId], references: [id])
@@ -67,4 +72,14 @@ model UserProfile {
 
   @@unique([userId])
   @@map("userprofiles")
+}
+
+enum Status {
+  ACTIVE
+  DEACTIVE
+}
+
+enum Role {
+  USER
+  ADMIN
 }

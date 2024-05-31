@@ -4,10 +4,16 @@ import router from "./app/Routes";
 import globalErrorHandler from "./app/middleWare/globalErrorHandler";
 import { notFound } from "./app/middleWare/notFound";
 const app: Application = express();
-app.use(cors());
 
 //parser
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 app.use(globalErrorHandler);
 app.use(express.urlencoded({ extended: true }));
 

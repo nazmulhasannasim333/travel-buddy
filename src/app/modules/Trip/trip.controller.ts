@@ -5,11 +5,9 @@ import pick from "../../shared/pick";
 import { tripFilterAbleFields } from "./trip.constant";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
-import { JwtPayload } from "jsonwebtoken";
 
 const createTrip = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    // Ensure req.user is defined and contains userId
     const { userId } = req.user;
     if (!userId) {
       res.status(401).json({
@@ -19,14 +17,26 @@ const createTrip = catchAsync(
       return;
     }
 
-    const { destination, startDate, endDate, budget, activities } = req.body;
+    const {
+      destination,
+      description,
+      startDate,
+      endDate,
+      budget,
+      type,
+      photo,
+      activities,
+    } = req.body;
 
     const trip = await tripServices.createTrip(
       userId,
       destination,
+      description,
       startDate,
       endDate,
       budget,
+      type,
+      photo,
       activities
     );
 
@@ -60,8 +70,6 @@ const sendRequestController = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const { tripId } = req.params;
     const { userId } = req.body;
-
-
 
     const request = await tripServices.sendTravelBuddyRequest(tripId, userId);
 

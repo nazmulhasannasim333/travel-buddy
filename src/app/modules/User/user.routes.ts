@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post(
   "/register",
-  validateRequest(userValidation.UserCreateSchema),
+  // validateRequest(userValidation.UserCreateSchema),
   userController.registerUser
 );
 router.post(
@@ -15,5 +15,6 @@ router.post(
   validateRequest(userValidation.UserLoginSchema),
   userController.loginUser
 );
+router.get("/users", userController.getAllUser);
 
 export const userRoutes = router;
