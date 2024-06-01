@@ -66,10 +66,24 @@ const getTripsController = catchAsync(
   }
 );
 
+const getSingleTrip = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const result = await tripServices.getSingleTripFromDB(req.params.id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Trips retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 const sendRequestController = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const { tripId } = req.params;
     const { userId } = req.body;
+    console.log(tripId, userId);
 
     const request = await tripServices.sendTravelBuddyRequest(tripId, userId);
 
@@ -132,4 +146,5 @@ export const tripController = {
   sendRequestController,
   getPotentialBuddiesController,
   respondToBuddyRequestController,
+  getSingleTrip,
 };

@@ -55,11 +55,17 @@ const getFilteredTrips = async (
   }
 
   if (Object.keys(filterData).length > 0) {
-    const { destination, startDate, endDate, minBudget, maxBudget } =
+    const { destination, startDate, endDate, minBudget, maxBudget, type } =
       filterData;
     if (destination) {
       andCondition.push({
         destination: { contains: destination },
+      });
+    }
+
+    if (type) {
+      andCondition.push({
+        type: { contains: type },
       });
     }
 
@@ -128,6 +134,15 @@ const getFilteredTrips = async (
   };
 };
 
+const getSingleTripFromDB = async (id: string) => {
+  const result = await prisma.trip.findUniqueOrThrow({
+    where: {
+      id: id,
+    },
+  });
+  return result;
+};
+
 const sendTravelBuddyRequest = async (
   tripId: string,
   userId: string
@@ -187,4 +202,5 @@ export const tripServices = {
   sendTravelBuddyRequest,
   getPotentialTravelBuddies,
   respondToTravelBuddyRequest,
+  getSingleTripFromDB,
 };

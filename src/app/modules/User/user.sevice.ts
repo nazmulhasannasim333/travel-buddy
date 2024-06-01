@@ -58,6 +58,7 @@ const loginUser = async (email: string, password: string): Promise<any> => {
     name: user.name,
     email: user.email,
     userId: user.id,
+    role: user.role,
   };
 
   const token = createToken(

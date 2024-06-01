@@ -11,10 +11,11 @@ const router = express.Router();
 router.post(
   "/trips",
   auth(),
-  // validateRequest(tripValidation.createTripValidation),
+  validateRequest(tripValidation.createTripValidation),
   tripController.createTrip
 );
 router.get("/trips", tripController.getTripsController);
+router.get("/trips/:id", tripController.getSingleTrip);
 
 router.post(
   "/trip/:tripId/request",

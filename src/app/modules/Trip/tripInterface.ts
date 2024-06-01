@@ -1,5 +1,6 @@
 export type ITripFilterRequest = {
   destination?: string | undefined;
+  type?: string | undefined;
   startDate?: string;
   endDate?: string;
   minBudget?: number | undefined;
