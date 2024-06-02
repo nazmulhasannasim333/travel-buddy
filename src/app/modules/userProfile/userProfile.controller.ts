@@ -5,7 +5,7 @@ import sendResponse from "../../shared/sendResponse";
 
 const getUserProfileController = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const { userId } = req.user; 
+    const { userId } = req.user;
 
     const userProfile = await userProfileService.getUserProfile(userId);
 

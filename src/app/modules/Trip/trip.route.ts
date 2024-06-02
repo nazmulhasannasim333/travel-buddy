@@ -15,7 +15,10 @@ router.post(
   tripController.createTrip
 );
 router.get("/trips", tripController.getTripsController);
+
 router.get("/trips/:id", tripController.getSingleTrip);
+
+router.get("/userTrip", auth(), tripController.getUserTrip);
 
 router.post(
   "/trip/:tripId/request",
@@ -24,7 +27,7 @@ router.post(
 );
 
 router.get(
-  "/travel-buddies/:tripId",
+  "/travel-buddies",
   auth(),
   tripController.getPotentialBuddiesController
 );
@@ -34,4 +37,7 @@ router.put(
   auth(),
   tripController.respondToBuddyRequestController
 );
+
+router.delete("/trip/:tripId", auth(), tripController.deleteTrip);
+
 export const tripRoutes = router;

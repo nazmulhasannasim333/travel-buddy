@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { createToken } from "./user.utils";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { AuthUtils, createToken } from "./user.utils";
 import Config from "../../Config";
+import ApiError from "../../errors/ApiError";
+import httpStatus from "http-status";
+import { hashedPassword } from "../../helpars/hashPasswordHelper";
 
 const prisma = new PrismaClient();
 
@@ -78,8 +81,81 @@ const getUserFromDB = async () => {
   return user;
 };
 
+const changeStatusFromDB = async (userId: string, status: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status },
+  });
+
+  return updatedUser;
+};
+
+const changeRoleFromDB = async (userId: string, role: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const updatedUserRole = await prisma.user.update({
+    where: { id: userId },
+    data: { role },
+  });
+
+  return updatedUserRole;
+};
+
+const changePassword = async (
+  user: JwtPayload | null,
+  payload: any
+): Promise<void> => {
+  const { oldPassword, newPassword } = payload;
+
+  const isUserExist = await prisma.user.findUnique({
+    where: {
+      id: user?.userId,
+    },
+  });
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
+  }
+
+  // checking old password
+  if (
+    isUserExist.password &&
+    !(await AuthUtils.comparePasswords(oldPassword, isUserExist.password))
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Old Password is incorrect");
+  }
+
+  const hashPassword = await hashedPassword(newPassword);
+
+  await prisma.user.update({
+    where: {
+      id: isUserExist.id,
+    },
+    data: {
+      password: hashPassword,
+    },
+  });
+};
+
 export const userServices = {
   registerUser,
   loginUser,
   getUserFromDB,
+  changeStatusFromDB,
+  changeRoleFromDB,
+  changePassword,
 };

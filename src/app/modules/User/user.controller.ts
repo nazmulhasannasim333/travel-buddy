@@ -53,8 +53,56 @@ const getAllUser = catchAsync(
   }
 );
 
+const changeStatus = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.params;
+    const { status } = req.body;
+    console.log(status);
+    const result = await userServices.changeStatusFromDB(userId, status);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Status Change successfully",
+      data: result,
+    });
+  }
+);
+const changeRole = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.params;
+    const { role } = req.body;
+    const result = await userServices.changeRoleFromDB(userId, role);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Role Change successfully",
+      data: result,
+    });
+  }
+);
+
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const { ...passwordData } = req.body;
+
+  await userServices.changePassword(user, passwordData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Password changed successfully!",
+    data: {
+      status: 200,
+      message: "Password changed successfully!",
+    },
+  });
+});
+
 export const userController = {
   registerUser,
   loginUser,
   getAllUser,
+  changeStatus,
+  changeRole,
+  changePassword,
 };

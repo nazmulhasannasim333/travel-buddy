@@ -38,23 +38,18 @@ const updateUserProfile = async (
   name: string,
   email: string
 ): Promise<TUser | null> => {
-  try {
-    const updatedProfile = await prisma.user.update({
-      where: { id: userId },
-      data: { name, email },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-    return updatedProfile;
-  } catch (error) {
-    console.error("Error updating user profile:", error);
-    return null;
-  }
+  const updatedProfile = await prisma.user.update({
+    where: { id: userId },
+    data: { name, email },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return updatedProfile;
 };
 
 export const userProfileService = {

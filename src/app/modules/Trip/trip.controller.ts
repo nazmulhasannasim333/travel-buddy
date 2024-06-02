@@ -79,11 +79,37 @@ const getSingleTrip = catchAsync(
   }
 );
 
+const getUserTrip = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.user;
+    const result = await tripServices.getUserTripFromDB(userId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User trips retrieved successfully",
+      data: result,
+    });
+  }
+);
+
+const deleteTrip = catchAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const result = await tripServices.deleteTripFromDB(req.params.tripId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Trips deleted successfully",
+      data: result,
+    });
+  }
+);
+
 const sendRequestController = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const { tripId } = req.params;
     const { userId } = req.body;
-    console.log(tripId, userId);
 
     const request = await tripServices.sendTravelBuddyRequest(tripId, userId);
 
@@ -98,10 +124,10 @@ const sendRequestController = catchAsync(
 
 const getPotentialBuddiesController = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const { tripId } = req.params;
+    const { userId } = req.user;
 
     const potentialBuddies = await tripServices.getPotentialTravelBuddies(
-      tripId
+      userId
     );
 
     sendResponse(res, {
@@ -147,4 +173,6 @@ export const tripController = {
   getPotentialBuddiesController,
   respondToBuddyRequestController,
   getSingleTrip,
+  deleteTrip,
+  getUserTrip,
 };

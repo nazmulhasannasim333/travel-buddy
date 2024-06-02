@@ -55,11 +55,24 @@ const getFilteredTrips = async (
   }
 
   if (Object.keys(filterData).length > 0) {
-    const { destination, startDate, endDate, minBudget, maxBudget, type } =
-      filterData;
+    const {
+      destination,
+      startDate,
+      endDate,
+      minBudget,
+      maxBudget,
+      type,
+      description,
+    } = filterData;
     if (destination) {
       andCondition.push({
         destination: { contains: destination },
+      });
+    }
+
+    if (description) {
+      andCondition.push({
+        description: { contains: description },
       });
     }
 
@@ -143,6 +156,25 @@ const getSingleTripFromDB = async (id: string) => {
   return result;
 };
 
+const getUserTripFromDB = async (userId: string) => {
+  const result = await prisma.trip.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+  return result;
+};
+
+const deleteTripFromDB = async (id: string) => {
+  const result = await prisma.trip.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return result;
+};
+
 const sendTravelBuddyRequest = async (
   tripId: string,
   userId: string
@@ -159,18 +191,21 @@ const sendTravelBuddyRequest = async (
 };
 
 const getPotentialTravelBuddies = async (
-  tripId: string
+  userId: string
 ): Promise<TravelBuddyRequest[]> => {
   const potentialBuddies = await prisma.travelBuddyRequest.findMany({
     where: {
-      tripId,
+      userId,
     },
     include: {
-      user: {
+      trip: {
         select: {
           id: true,
-          name: true,
-          email: true,
+          destination: true,
+          description: true,
+          photo: true,
+          startDate: true,
+          endDate: true,
         },
       },
     },
@@ -203,4 +238,6 @@ export const tripServices = {
   getPotentialTravelBuddies,
   respondToTravelBuddyRequest,
   getSingleTripFromDB,
+  deleteTripFromDB,
+  getUserTripFromDB,
 };
