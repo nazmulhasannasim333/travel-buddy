@@ -60,4 +60,4 @@ To set up the Travel Buddy App locally, follow these steps:
 3. **Set Up Environment Variables**: Create a `.env` file based on the provided `.env.example` file and fill in the necessary configuration.
 4. **Run Migrations**: `npx prisma migrate dev` to apply database migrations.
 5. **Start the Server**: `npm start` to run the backend server.
-6. **Access the App**: Visit `http://localhost:3000` in your browser to access the Travel Buddy App.
+6. **Access the App**: Visit `http://localhost:5000` in your browser to access the Travel Buddy App.
