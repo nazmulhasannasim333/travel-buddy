@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role, Status } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { AuthUtils, createToken } from "./user.utils";
@@ -81,7 +81,7 @@ const getUserFromDB = async () => {
   return user;
 };
 
-const changeStatusFromDB = async (userId: string, status: string) => {
+const changeStatusFromDB = async (userId: string, status: Status) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -98,7 +98,7 @@ const changeStatusFromDB = async (userId: string, status: string) => {
   return updatedUser;
 };
 
-const changeRoleFromDB = async (userId: string, role: string) => {
+const changeRoleFromDB = async (userId: string, role: Role) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });

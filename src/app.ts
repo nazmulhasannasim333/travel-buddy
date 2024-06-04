@@ -9,7 +9,8 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: "hhttps://travel-buddy-frontends.vercel.app",
     credentials: true,
   })
 );
